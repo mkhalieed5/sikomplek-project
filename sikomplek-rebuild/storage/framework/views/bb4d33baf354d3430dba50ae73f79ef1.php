@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pak RT - Sikomplek</title>
+    <script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="min-h-screen bg-[#f8fbff] font-sans text-[#102a43]">
+    <main class="mx-auto min-h-screen max-w-7xl p-5 sm:p-8">
+        <header class="flex items-center justify-between"><div><p class="text-xs font-bold uppercase tracking-widest text-[#19b394]">Dashboard Pak RT</p><h1 class="mt-2 text-3xl font-black"><?php echo e($tenant?->name ?? 'Komplek Anda'); ?></h1><p class="mt-2 text-sm text-[#64748b]">Kode: <strong><?php echo e($tenant?->code ?? '-'); ?></strong> · <?php echo e($tenant?->address ?? 'Alamat belum diisi'); ?></p></div><form method="POST" action="<?php echo e(route('logout')); ?>"><?php echo csrf_field(); ?><button class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-rose-50 hover:text-rose-600"><i class="fa-solid fa-right-from-bracket mr-2 text-rose-500"></i>Keluar</button></form></header>
+        <section class="mt-8 rounded-3xl bg-gradient-to-r from-[#135ed1] to-[#2f86ed] p-7 text-white shadow-xl"><p class="text-xs font-bold uppercase tracking-widest text-blue-100">Komunitas terhubung</p><h2 class="mt-3 text-3xl font-black">Selamat datang, <?php echo e($user->name); ?>!</h2><p class="mt-2 text-blue-100">Kelola warga dan iuran <?php echo e($tenant?->name ?? 'komplek Anda'); ?> dengan lebih mudah.</p></section>
+        <div class="mt-8 grid gap-5 sm:grid-cols-3"><div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#e5edf5]"><i class="fa-solid fa-house-user text-2xl text-[#1769e0]"></i><p class="mt-4 text-sm text-[#64748b]">Total KK</p><p class="text-4xl font-black"><?php echo e($totalKk); ?></p></div><div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#e5edf5]"><i class="fa-solid fa-users text-2xl text-[#19b394]"></i><p class="mt-4 text-sm text-[#64748b]">Total Warga</p><p class="text-4xl font-black"><?php echo e($totalWarga); ?></p></div><div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#e5edf5]"><i class="fa-solid fa-wallet text-2xl text-indigo-600"></i><p class="mt-4 text-sm text-[#64748b]">Pemasukan Bulan Ini</p><p class="text-2xl font-black">Rp <?php echo e(number_format($pemasukanBulanIni, 0, ',', '.')); ?></p></div></div>
+        <div class="mt-8 grid gap-4 sm:grid-cols-3"><a href="<?php echo e(route('warga')); ?>" class="rounded-2xl bg-white p-5 font-bold shadow-sm ring-1 ring-[#e5edf5] hover:ring-indigo-300"><i class="fa-solid fa-users mr-2 text-indigo-600"></i>Kelola Data Warga</a><a href="<?php echo e(route('kartu-keluarga')); ?>" class="rounded-2xl bg-white p-5 font-bold shadow-sm ring-1 ring-[#e5edf5] hover:ring-indigo-300"><i class="fa-solid fa-id-card mr-2 text-indigo-600"></i>Kelola Kartu Keluarga</a><a href="<?php echo e(route('iuran')); ?>" class="rounded-2xl bg-white p-5 font-bold shadow-sm ring-1 ring-[#e5edf5] hover:ring-indigo-300"><i class="fa-solid fa-wallet mr-2 text-indigo-600"></i>Kelola Iuran</a></div>
+    </main>
+</body>
+</html>
+<?php /**PATH C:\Users\emkha\Documents\sikomplek-rebuild\sikomplek-rebuild\resources\views/home/admin.blade.php ENDPATH**/ ?>

@@ -63,9 +63,6 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('dashboard');
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard.legacy');
 });
 
 Route::middleware('guest')->group(function () {

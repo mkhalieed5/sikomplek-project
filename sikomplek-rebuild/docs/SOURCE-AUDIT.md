@@ -8,7 +8,7 @@ The supplied source archive was inspected across `routes/`, `app/Http/Controller
 
 - Landing page: `/` -> `welcome`.
 - Authentication: `/login`, `/register`, `/register-rt`, and the authenticated `/register-rt/success` flow.
-- Dashboard: `/home`; `/dashboard` is retained as a legacy view route.
+- Dashboard: `/home`.
 - Family cards: `/kartu-keluarga` and create/edit/update/delete endpoints.
 - Residents: `/warga` and create/edit/update/delete endpoints.
 - Fee categories: `/iuran` and `/kategori-iuran` endpoints.
@@ -17,11 +17,11 @@ The supplied source archive was inspected across `routes/`, `app/Http/Controller
 
 ## Existing role-to-dashboard behavior (preserved)
 
-The active `/home` route selects `home.super-admin` for `super_admin`, `home.admin` for `tenant_admin`, and `home.warga` for every other role. Therefore `bendahara` currently renders `home.warga`. `DashboardController` contains a separate, more detailed dashboard data calculation but is not connected to the active `/home` route. Per the requested option C, this rebuild does not invent a new bendahara dashboard or silently switch the active route to `DashboardController`.
+The active `/home` route selects `home.super-admin` for `super_admin`, `home.admin` for `tenant_admin`, and `home.warga` for every other role. Therefore `bendahara` currently renders `home.warga`. Per the requested option C, this rebuild does not invent a new bendahara dashboard.
 
 ## Views and visual assets retained
 
-All source Blade views and the source CSS/JS files are carried forward unchanged, including the landing page, authentication pages, three active role dashboards, generic CRUD index/form, and legacy module views. This keeps the existing design implementation as the reference instead of substituting a dashboard template. Responsive behavior is retained as authored in the original Blade/CSS/JS; pixel-perfect comparison still requires browser screenshots from the source and rebuilt app.
+The active Blade views and source CSS/JS files are carried forward unchanged, including the landing page, authentication pages, three active role dashboards, and generic CRUD index/form. This keeps the existing design implementation as the reference instead of substituting a dashboard template. Responsive behavior is retained as authored in the original Blade/CSS/JS; pixel-perfect comparison still requires browser screenshots from the source and rebuilt app.
 
 ## Data model and migrations
 
@@ -48,14 +48,20 @@ SQLite compatibility observations:
 ## Incomplete source functionality (not invented)
 
 - There are models and migrations for `iurans`, `surats`, and `pengumumans`, but no corresponding first-class CRUD routes/pages in the active web route file.
-- The standalone `DashboardController` is not wired to the active dashboard route.
 - No explicit tenant administration CRUD module is exposed in the active web routes.
 - No dedicated bendahara dashboard exists in the source route/view combination.
 
 These areas remain as source-level gaps rather than being represented as already-working features.
 
+## Cleanup applied
+
+- Removed the unused `/dashboard` legacy route, its unreferenced `DashboardController`, and `resources/dashboard.blade.php`. The route resolved `view('dashboard')`, but the Blade file was outside Laravel's `resources/views` directory and also extended a nonexistent `layouts.app`, so the page could not render.
+- Removed unused flat views (`app`, `datawarga`, `home`, `iuran`, `kartukeluarga`, `login`, `pembayaraniuran`, and `register`) after confirming none were referenced by routes, controllers, or other Blade templates.
+- Removed the empty root `package-lock.json`; the actual frontend manifest and lockfile are in `sikomplek-rebuild/`.
+
 ## Verification status
 
-- PHP syntax lint: all 71 PHP files under app/routes/database/tests/bootstrap/config passed `php -l` in the rebuild copy.
-- Automated PHPUnit tests: not executed in this build environment. The available PHP runtime does not have `pdo_sqlite` (nor `mbstring` and `dom`), so Laravel cannot run its SQLite migrations or database tests here. The project includes PHPUnit configuration for SQLite in-memory, and the new bendahara routing regression test, but passing test status must wait for execution on the target PHP installation.
-- Migration execution, browser rendering, CRUD flows, and screenshot-level visual comparison remain unverified until the project is installed on a machine with the required PHP extensions and Node dependencies.
+- PHP syntax lint: all 70 remaining PHP files under app/routes/database/tests/bootstrap/config passed `php -l`.
+- `php artisan route:list --except-vendor` completed and showed 61 routes; `/home` remains active and the broken legacy `/dashboard` route is gone.
+- `php artisan test`: 13 tests passed (74 assertions).
+- Migration execution outside the test suite, browser rendering, CRUD flows, and screenshot-level visual comparison remain unverified.

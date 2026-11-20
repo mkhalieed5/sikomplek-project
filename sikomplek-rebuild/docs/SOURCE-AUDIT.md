@@ -14,6 +14,7 @@ The supplied source archive was inspected across `routes/`, `app/Http/Controller
 - Fee categories: `/iuran` and `/kategori-iuran` endpoints.
 - Fee payments: `/pembayaran-iuran` and create/edit/update/delete endpoints.
 - API: Sanctum-protected `/api/me`, logout, and API resources for family cards, residents, fee categories, and payments; public API login/register/register-rt endpoints.
+- Iuran categories and payment CRUD are restricted to `tenant_admin` and `super_admin` on both web and API routes.
 
 ## Existing role-to-dashboard behavior (preserved)
 

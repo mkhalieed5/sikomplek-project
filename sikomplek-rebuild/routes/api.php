@@ -22,6 +22,8 @@ Route::name('api.')->middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('kartu-keluarga', KartuKeluargaController::class);
     Route::apiResource('warga', WargaController::class);
-    Route::apiResource('kategori-iuran', KategoriIuranController::class);
-    Route::apiResource('pembayaran-iuran', PembayaranIuranController::class);
+    Route::middleware('can:manage-iuran')->group(function () {
+        Route::apiResource('kategori-iuran', KategoriIuranController::class);
+        Route::apiResource('pembayaran-iuran', PembayaranIuranController::class);
+    });
 });

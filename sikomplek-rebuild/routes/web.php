@@ -99,7 +99,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/warga/{id}', [WargaCrudController::class, 'destroy'])->name('warga.destroy');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'can:manage-iuran'])->group(function () {
     Route::get('/iuran', [KategoriIuranCrudController::class, 'index'])->name('iuran');
     Route::get('/kategori-iuran', [KategoriIuranCrudController::class, 'index'])->name('kategori-iuran');
     Route::get('/kategori-iuran/create', [KategoriIuranCrudController::class, 'create'])->name('kategori-iuran.create');
